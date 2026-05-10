@@ -49,8 +49,9 @@ export async function POST(req: NextRequest) {
         { status: 409 }
       )
     }
+    console.error('[POST /api/links] error:', (error as any)?.message, (error as any)?.code)
     return NextResponse.json(
-      { error: 'Failed to create link' },
+      { error: 'Failed to create link', detail: (error as any)?.message },
       { status: 500 }
     )
   }
@@ -105,9 +106,10 @@ export async function GET(req: NextRequest) {
     }))
 
     return NextResponse.json(formattedLinks)
-  } catch (error) {
+  } catch (error: any) {
+    console.error('[GET /api/links] error:', error?.message, error?.code)
     return NextResponse.json(
-      { error: 'Failed to fetch links' },
+      { error: 'Failed to fetch links', detail: error?.message },
       { status: 500 }
     )
   }
